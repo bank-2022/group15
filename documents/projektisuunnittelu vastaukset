@@ -1,0 +1,23 @@
+	Laatijat, tiedostot, versio, hyväksyjä, luomispäivämäärä, viimeinen tallennus, tulostus päivä ja projekti ryhmän nimi.
+	kannessa on eri versionumerot, päivämäärät, muutosperusteet, tekijä ja hyväksyjä.
+	organisoida projektin toiminta kokonaisuudessa ja sisällyttää koko projektin ja siihen osallistuvien toiminnan suunnittelun, organisoinnin, valvonnan ja johtamisen.
+	Määritelmät eivät välttämättä ole lukijalle tuttuja, ne voidaan ajatella tuottavan sekaannuksia ja määritelmä ei ole yleisesti käytössä tai tiedossa.
+	Luvun tarkoitus on kuvata lyhyesti ja selkeästi projektin osapuolet, osapuolten projektiyhteistyön historia ja osapuolten yleiset tavoitteet tälle projektille.
+	Projekti on rajattu moneen eri osaan esimerkiksi projektisuunnitteluun, riskienhallintaan ja määrittely vaiheeseen.
+	Noudatetaan projektissa sovittuja projekti ja dokumentointikäytäntöjä sekä olemassa olevia dokumenttipohjia.
+	jokaisen vaiheen jälkeen suoritetaan katselmointi ja ohjaava opettaja katselmoi projektin tuotoksia myös viikoittain.
+	Esitutkimus ei aina kuulu varsinaiseen toteutusprojektiin koska varsinainen tuotteen toteutusprojekti käynnistyy vasta esitutkimusvaiheen ja projektisopimuksen jälkeen.
+	Ensisijainen luovutuspäivämäärä on viimeisen viikon perjantaina.
+	Toteutus ja testausvaiheen aikana suoritetaan jatkuvasti, yksikkötestausta kun komponentit ovat valmiina, suoritetaan integrointitestaus.
+	Ohjausryhmä.
+	Vetäjän vastuulla on huolehtia siitä että sovitut tehtävät tulevat tehdyksi aikataulun mukaisesti, tiedottaa ryhmälle muutoksista ja projektin Teams-sivujen päivittämisestä.
+	Ohjausryhmä kokoontuu kunkin vaiheen jälkeen ja hyväksyy työvaiheiden tulokset ja seuraavien vaiheiden toimintasuunnitelmat.
+	Puheenjohtajana ja sihteerinä toimii toimittajan projektiryhmän vetäjä.
+	Ulkoinen raportointi on projektiryhmän ja sen kanssa kommunikoivien ulkoisten ryhmien välinen raportointi.
+	Sisäinen raportointi on raportointi projektiryhmän sisällä.
+	Projektin ulkoisesta ja sisäisestä tiedottamisesta vastaa projektiryhmän vetäjä.
+	Ohjelmistoprojektissa riski on jokin tekijä, joka voi muodostua ongelmaksi projektin aikana.
+  Muutostenhallintaan kuuluu muutospyynnöt jotka on laadittava kirjallisesti, mikäli muutos koskee katselmointikäytännön läpikäynyttä ja jo hyväksyttyä projektin tulosta.
+	Dokumentin jäädyttäminen tarkoittaa että siihen ei saa enää tehdä muutoksia kuin hyväksyttyä muutoksenhallintamenettelyä käyttäen.
+	Projekti päätetään hyväksymistestauksen jälkeen ohjausryhmän päätöksellä. Kun projektin on valmis tai projektin varattu aika päättyy niin projektin tulokset esitellään ohjaavalle opettajalle.
+	Kun ohjausryhmä hyväksyy dokumentin, siitä tehdään versio 1.00
