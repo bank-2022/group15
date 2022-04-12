@@ -9,12 +9,12 @@ const card = {
     getCardPin: function(serial, callback){
         return db.query('SELECT pin FROM cards WHERE cardSerial=?', [serial], callback);
     },
-    debugAddCard: function(serial, pin, accountID, callback){
-        bcrypt.hash(pin, saltRounds, function(err, hashed_pin){
+    debugAddCard: function(card, callback){
+        bcrypt.hash(card.pin, saltRounds, function(err, hashed_pin){
             if (err) {
                 response.json(err);
               } else {
-                return db.query('insert into cards (cardSerial, pin, accountID) values(?, ?, ?)', [serial, hashed_pin, accountID], callback);
+                return db.query('insert into cards (cardSerial, pin, accountID) values(?, ?, ?)', [card.cardSerial, hashed_pin, card.accountID], callback);
               }
         }) 
     }
