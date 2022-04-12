@@ -29,11 +29,11 @@ router.get('/:cardSerial/:pin', async function(request, response) {
 // Debuggausfunktio kortin lisäämiseen, anna serial (uniikki), pin ja account id
 // Huom. POST ja PUT ei toimi selaimessa, käytä testaukseen postmään
 router.post('/addCard/:cardSerial/:pin/:accountID', function(request, response) {
-  card.debugAddCard(request.params.cardSerial, request.params.pin, request.params.accountID, function(err, dbResult) {
+  card.debugAddCard(request.body, function(err, dbResult) {
     if (err) {
       response.json(err);
     } else {
-      response.json(dbResult);
+      response.json(request.body);
     }
   });
 });
