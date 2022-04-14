@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "tunnusluku.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+
+    void on_auki_clicked();
+
 private:
     Ui::MainWindow *ui;
+    Tunnusluku*pToka;
 };
 #endif // MAINWINDOW_H
