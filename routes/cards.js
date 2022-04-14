@@ -16,10 +16,10 @@ router.get('/:cardSerial/:pin', async function(request, response) {
         }
         else {
           if(bcrypt.compareSync(request.params.pin, dbResult[0].pin)){
-            response.send("Oikea pin");
+            response.send("true");
           }
           else {
-            response.send("Väärä pin");
+            response.send("false");
           }
         }
       }
