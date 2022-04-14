@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "myurl.h"
 #include "valikko.h"
-#include <string>
 #include <QMessageBox>
 #include <QDialog>
 #include <QtNetwork>
@@ -52,6 +51,7 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    int tries;
 };
 
 #endif // TUNNUSLUKU_H

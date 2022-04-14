@@ -12,6 +12,7 @@ Tunnusluku::Tunnusluku(QWidget *parent) :
     valikkoo = new valikko;
     objectMyUrl = new MyUrl;
     base_url = objectMyUrl->getBase_url();
+    tries = 3;
 }
 
 Tunnusluku::~Tunnusluku()
@@ -27,6 +28,29 @@ Tunnusluku::~Tunnusluku()
 void Tunnusluku::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
+    if (response_data == "false")
+    {
+        tries--;
+        if(tries>0){
+            ui->Laatikko->setText("Väärä pin, "+QString::number(tries)+" yritystä jäljellä.");
+        }
+        else
+        {
+            ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
+        }
+
+    }
+    else if (response_data == "true")
+    {
+        tries = 3;
+        ui->Laatikko->setText("Oikea pin");
+        valikkoo->show();
+        this-> close();
+    }
+    else
+    {
+        ui->Laatikko->setText("Error");
+    }
     qDebug()<<"DATA : "+response_data;
     //QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     //QJsonArray json_array = json_doc.array();
@@ -100,12 +124,27 @@ void Tunnusluku::on_pushButton_11_clicked() //voit poistaa laatikkoon tulleet nu
 
 void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatikkoon niin sulje ja näytä seuraava kohta
 {                                           //jos taas pin koodi on väärä niin ilmoita yritysten määrä kunnes viimeinen on käytetty sitten sulje automaatti
-    QNetworkRequest request((base_url+"/cards/4258145576238597/"+pinko));
-    loginManager = new QNetworkAccessManager(this);
 
-    connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+    if (pinko == "")
+    {
+        ui->Laatikko->setText("Syötä pin");
+    }
+    else
+    {
+        if(tries>0){
 
-    reply = loginManager->get(request);
+            QNetworkRequest request((base_url+"/cards/4258145576238597/"+pinko));
+            loginManager = new QNetworkAccessManager(this);
+
+            connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+            reply = loginManager->get(request);
+        }
+        else{
+            ui->Laatikko->setText("Korttisi on lukittu.");
+        }
+        pinko = "";
+    }
 
 
 //    if (pinko == "1234") {
