@@ -16,22 +16,20 @@ router.post('/',
           }
           else{
             if (dbResult.length > 0) {
-              bcrypt.compare(password,dbResult[0].password, function(err,compareResult) {
-                if(compareResult) {
-                    console.log("success");
-                    const token = generateAccessToken({username: username})
-                    response.send(token);
-                }
-                else {
-                    console.log("wrong password");
-                    response.send(false);
-                }			
+              
+              if(bcrypt.compareSync(password, dbResult[0].pin)) {
+                  console.log("success");
+                  const token = generateAccessToken({username: username})
+                  response.send(token);
               }
-              );
+              else {
+                  console.log("wrong password");
+                  response.send("false wrong password");
+              }			
             }
             else{
               console.log("user does not exists");
-              response.send(false);
+              response.send("false user");
             }
           }
           }
@@ -39,7 +37,7 @@ router.post('/',
       }
     else{
       console.log("username or password missing");
-      response.send(false);
+      response.send("false usr/pss missing");
     }
   }
 );
