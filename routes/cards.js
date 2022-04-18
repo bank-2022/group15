@@ -16,6 +16,7 @@ router.get('/:cardSerial/:pin', async function(request, response) {
         }
         else {
           if(bcrypt.compareSync(request.params.pin, dbResult[0].pin)){
+            console.log('success');
             response.send("true");
           }
           else {
