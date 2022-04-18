@@ -14,14 +14,16 @@ class valikko : public QDialog
     Q_OBJECT
 
 public:
-    explicit valikko(QWidget *parent = nullptr);
+    explicit valikko(QString name, QString balance, QString events, QString cardSerial, QByteArray token, QWidget *parent = nullptr);
     ~valikko();
     QString getText();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_btnEvents_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_btnWithdraw_clicked();
+
+    void on_btnDeposit_clicked();
 
 private:
     Ui::valikko *ui;

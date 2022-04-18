@@ -2,13 +2,15 @@
 #include "ui_valikko.h"
 
 
-valikko::valikko(QWidget *parent) :
+valikko::valikko(QString name, QString balance, QString events, QString cardSerial, QByteArray token, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::valikko)
 {
     ui->setupUi(this);
+    ui->lblWelcome->setText("Welcome "+name);
+    ui->lblBalance->setText(balance);
+    ui->lblEvents->setText(events);
     Nosta = new Nosta_rahaa;
-    Saldo = new Tili_saldo;
 }
 
 valikko::~valikko()
@@ -17,19 +19,24 @@ valikko::~valikko()
     ui = nullptr;
     delete Nosta;
     Nosta = nullptr;
-    delete Saldo;
-    Saldo = nullptr;
 }
-void valikko::on_pushButton_clicked()
+
+void valikko::on_btnEvents_clicked()
+{
+
+}
+
+
+void valikko::on_btnWithdraw_clicked()
 {
     Nosta->show();
     this->close();
 }
 
 
-void valikko::on_pushButton_2_clicked()
+void valikko::on_btnDeposit_clicked()
 {
-    Saldo->show();
+    Nosta->show();
     this->close();
 }
 

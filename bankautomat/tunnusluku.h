@@ -26,6 +26,9 @@ public:
 
 private slots:
     void loginSlot(QNetworkReply *reply);
+    void getCustomerSlot(QNetworkReply *reply);
+    void getAccountSlot(QNetworkReply *reply);
+    void getEventsSlot(QNetworkReply *reply);
 
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
@@ -51,7 +54,13 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    QByteArray token;
     int tries;
+
+    QString name;
+    QString balance;
+    QString events;
+    QString cardSerial;
 };
 
 #endif // TUNNUSLUKU_H
