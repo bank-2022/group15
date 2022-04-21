@@ -102,6 +102,7 @@ void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatik
     else
     {
         if(tries>0){
+            ui->Laatikko->setText("Connecting...");
             QJsonObject jsonObj;
             jsonObj.insert("username", "4258145576238597");
             jsonObj.insert("password", pinko);
@@ -246,7 +247,16 @@ void Tunnusluku::getEventsSlot(QNetworkReply *reply)
     QJsonArray json_array = json_doc.array();
     foreach (const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        events+=QString::number(json_obj["amount"].toInt())+", "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString()+"\n";
+        if(json_obj["eventType"].toString() == "nosto")
+        {
+            events+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+        }
+        else if (json_obj["eventType"].toString() == "talletus")
+        {
+            events+="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+        }
+        events.chop(14);
+        events+="\n";
     }
     qDebug()<<"events : "+events;
 

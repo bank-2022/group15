@@ -13,21 +13,24 @@ class Nosta_rahaa : public QWidget
     Q_OBJECT
 
 public:
-    explicit Nosta_rahaa(QWidget *parent = nullptr);
+    explicit Nosta_rahaa(QString cardSerial, QString balance, QString token, QWidget *parent = nullptr);
     ~Nosta_rahaa();
 
+signals:
+    void returning();
+
 private slots:
-    void on_pushButton_clicked();
+    void on_btn20Withdraw_clicked();
 
-    void on_pushButton_4_clicked();
+    void on_btn40Withdraw_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_btn80Withdraw_clicked();
 
-    void on_pushButton_5_clicked();
+    void on_btn120Withdraw_clicked();
 
-    void on_pushButton_3_clicked();
+    void on_btnCustomAmount_clicked();
 
-    void on_pushButton_6_clicked();
+    void on_btnReturn_clicked();
 
 private:
     Ui::Nosta_rahaa *ui;

@@ -3,7 +3,7 @@
 #include <QMessageBox>
 
 
-Nosta_rahaa::Nosta_rahaa(QWidget *parent) :
+Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QString token, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Nosta_rahaa)
 {
@@ -20,54 +20,48 @@ Nosta_rahaa::~Nosta_rahaa()
     lopeta = nullptr;
 }
 
-void Nosta_rahaa::on_pushButton_clicked()
+//void Nosta_rahaa::on_pushButton_clicked()
+//{
+//    QMessageBox msgBox;
+//    msgBox.setText("Nostit 20€");
+//    msgBox.exec();
+//    lopeta->show();
+//    this->close();
+
+
+void Nosta_rahaa::on_btn20Withdraw_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Nostit 20€");
-    msgBox.exec();
-    lopeta->show();
-    this->close();
+
 }
 
 
-void Nosta_rahaa::on_pushButton_4_clicked()
+void Nosta_rahaa::on_btn40Withdraw_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Nostit 80€");
-    msgBox.exec();
-    lopeta->show();
-    this->close();
+
 }
 
 
-void Nosta_rahaa::on_pushButton_2_clicked()
+void Nosta_rahaa::on_btn80Withdraw_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Nostit 40€");
-    msgBox.exec();
-    lopeta->show();
-    this->close();
+
 }
 
 
-void Nosta_rahaa::on_pushButton_5_clicked()
+void Nosta_rahaa::on_btn120Withdraw_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Nostit 120€");
-    msgBox.exec();
-    lopeta->show();
-    this->close();
+
 }
 
 
-void Nosta_rahaa::on_pushButton_3_clicked()
+void Nosta_rahaa::on_btnCustomAmount_clicked()
 {
-    this->close();
+
 }
 
 
-void Nosta_rahaa::on_pushButton_6_clicked()
+void Nosta_rahaa::on_btnReturn_clicked()
 {
-    //muu summa valitse itse
+    emit returning();
+    this->hide();
 }
 

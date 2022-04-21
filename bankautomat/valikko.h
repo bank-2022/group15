@@ -25,10 +25,15 @@ private slots:
 
     void on_btnDeposit_clicked();
 
+    void returningFromChild();
+
 private:
     Ui::valikko *ui;
     Nosta_rahaa*Nosta;
-    Tili_saldo*Saldo;
+    QString balance1;
+    QString cardSerial1;
+    QString pin1;
+    QString token1;
 };
 
 #endif // VALIKKO_H

@@ -27,44 +27,44 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="btn20Withdraw">
       <property name="text">
        <string>20</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="text">
-       <string>80</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>40</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="1">
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="btn120Withdraw">
       <property name="text">
        <string>120</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="pushButton_3">
+    <item row="0" column="1">
+     <widget class="QPushButton" name="btn40Withdraw">
       <property name="text">
-       <string>Lopeta</string>
+       <string>40</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn80Withdraw">
+      <property name="text">
+       <string>80</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="btnCustomAmount">
+      <property name="text">
+       <string>Muu summa</string>
       </property>
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="btnReturn">
       <property name="text">
-       <string>Muu summa</string>
+       <string>Takaisin</string>
       </property>
      </widget>
     </item>

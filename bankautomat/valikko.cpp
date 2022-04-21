@@ -6,11 +6,13 @@ valikko::valikko(QString name, QString balance, QString events, QString cardSeri
     QDialog(parent),
     ui(new Ui::valikko)
 {
+    balance1 = balance;
+    cardSerial1 = cardSerial;
+    token1 = token;
     ui->setupUi(this);
     ui->lblWelcome->setText("Welcome "+name);
     ui->lblBalance->setText(balance);
     ui->lblEvents->setText(events);
-    Nosta = new Nosta_rahaa;
 }
 
 valikko::~valikko()
@@ -29,14 +31,21 @@ void valikko::on_btnEvents_clicked()
 
 void valikko::on_btnWithdraw_clicked()
 {
+    Nosta = new Nosta_rahaa (cardSerial1, balance1, token1);
     Nosta->show();
-    this->close();
+    this->hide();
+    connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
 }
 
 
 void valikko::on_btnDeposit_clicked()
 {
-    Nosta->show();
+    //Nosta->show();
     this->close();
 }
 
+
+void valikko::returningFromChild()
+{
+    this->show();
+}
