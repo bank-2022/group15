@@ -10,7 +10,7 @@ const event = {
     },
 
     addEvent: function(event, callback){
-        return db.query('INSERT INTO EVENTS (cardSerial, dateTime, eventType, amount) values (?, ?, ?, ?)', [event.cardSerial, event.dateTime, event.eventType, event.amount], callback);
+        return db.query('INSERT INTO events (cardSerial, dateTime, eventType, amount) values (?, ?, ?, ?)', [event.cardSerial, event.dateTime, event.eventType, event.amount], callback);
     }
 };
 module.exports = event;
