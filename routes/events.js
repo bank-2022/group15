@@ -26,5 +26,15 @@ router.get('/:cardSerial', function(request, response) {
     });
 });
 
+//luo eventin
+router.post('/add/', function(request, response) {
+    event.addEvent(request.body, function(err, dbResult) {
+        if (err) {
+            response.json(err);
+        } else {
+            response.json(request.body);
+        }
+    });
+});
 
 module.exports = router;
