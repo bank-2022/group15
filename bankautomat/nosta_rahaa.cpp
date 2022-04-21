@@ -1,6 +1,6 @@
 #include "nosta_rahaa.h"
 #include "ui_nosta_rahaa.h"
-#include <QMessageBox>
+
 
 
 Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QWidget *parent) :
@@ -76,16 +76,67 @@ void Nosta_rahaa::withdrawEvent(int n)
     if (balance1.toInt()<n)
     {
         QMessageBox msgBox;
-        msgBox.setText("Nostetaan "+QString::number(n)+"€...");
+        msgBox.setText("Kate ei riitä");
         msgBox.exec();
 
     }
     else {
+        amount = n;
+        QMessageBox msgBox;
+        msgBox.setText("Nostetaan "+QString::number(n)+"€...");
+        msgBox.exec();
 
+
+        QJsonObject jsonObj;
+        QNetworkRequest request((base_url+"/accounts/"+cardSerial1+"/withdraw/"+QString::number(n)));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        //WEBTOKEN AUTH
+        request.setRawHeader(QByteArray("Authorization"), (token1));
+        //WEBTOKEN AUTH END
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(withdrawSlot(QNetworkReply*)));
+        reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
     }
 }
 
+void Nosta_rahaa::withdrawSlot(QNetworkReply*)
+{
+    response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
+    if (response_data == "Withdrawn successfully")
+    {
+        QJsonObject jsonObj;
+        jsonObj.insert("cardSerial", cardSerial1);
+        jsonObj.insert("dateTime", qAika.currentDateTime().toString());
+        jsonObj.insert("eventType", "nosto");
+        jsonObj.insert("amount", QString::number(amount.toInt()));
+        QNetworkRequest request((base_url+"/events/add"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+        //WEBTOKEN AUTH
+        request.setRawHeader(QByteArray("Authorization"), (token1));
+        //WEBTOKEN AUTH END
+
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(withdrawFinishSlot(QNetworkReply*)));
+
+        reply = loginManager->post(request,QJsonDocument(jsonObj).toJson());
+    }
+//    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+//    QJsonArray json_array = json_doc.array();
+//    foreach (const QJsonValue &value, json_array) {
+//        QJsonObject json_obj = value.toObject();
+//        witResult+=json_obj["name"].toString();
+//    }
+    //    qDebug()<<"name : "+name;
+}
+
+void Nosta_rahaa::withdrawFinishSlot(QNetworkReply *)
+{
+    response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
+}
 
 
 

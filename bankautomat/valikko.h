@@ -33,7 +33,7 @@ private:
     QString balance1;
     QString cardSerial1;
     QString pin1;
-    QString token1;
+    QByteArray token1;
 };
 
 #endif // VALIKKO_H

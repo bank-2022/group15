@@ -4,7 +4,8 @@
 #include <QWidget>
 #include "lopetus.h"
 #include "myurl.h"
-
+#include <QDateTime>
+#include <QMessageBox>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
@@ -40,17 +41,24 @@ private slots:
 
     void withdrawEvent(int n);
 
+    void withdrawSlot(QNetworkReply*);
+
+    void withdrawFinishSlot(QNetworkReply*);
+
 private:
     Ui::Nosta_rahaa *ui;
     Lopetus*lopeta;
     QString balance1;
     QByteArray token1;
     QString cardSerial1;
+    QString amount;
     MyUrl *objectMyUrl;
     QString base_url;
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    QString witResult;
+    QDateTime qAika;
 };
 
 #endif // NOSTA_RAHAA_H
