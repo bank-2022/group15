@@ -81,7 +81,7 @@ void Nosta_rahaa::withdrawEvent(int n)
 
     }
     else {
-        amount = n;
+        amount = QString::number(n);
         QMessageBox msgBox;
         msgBox.setText("Nostetaan "+QString::number(n)+"€...");
         msgBox.exec();
@@ -108,9 +108,10 @@ void Nosta_rahaa::withdrawSlot(QNetworkReply*)
     {
         QJsonObject jsonObj;
         jsonObj.insert("cardSerial", cardSerial1);
-        jsonObj.insert("dateTime", qAika.currentDateTime().toString());
+        qAika = QDateTime::currentDateTime();
+        jsonObj.insert("dateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
         jsonObj.insert("eventType", "nosto");
-        jsonObj.insert("amount", QString::number(amount.toInt()));
+        jsonObj.insert("amount", amount.toInt());
         QNetworkRequest request((base_url+"/events/add"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -136,6 +137,7 @@ void Nosta_rahaa::withdrawFinishSlot(QNetworkReply *)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
+    emit returning();
 }
 
 

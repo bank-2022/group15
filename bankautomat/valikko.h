@@ -4,6 +4,9 @@
 #include <QDialog>
 #include "nosta_rahaa.h"
 #include "tili_saldo.h"
+#include <QtNetwork>
+#include <QNetworkAccessManager>
+#include <QJsonDocument>
 
 namespace Ui {
 class valikko;
@@ -27,6 +30,9 @@ private slots:
 
     void returningFromChild();
 
+    void getAccountSlot(QNetworkReply*);
+    void getEventsSlot(QNetworkReply*);
+
 private:
     Ui::valikko *ui;
     Nosta_rahaa*Nosta;
@@ -34,6 +40,12 @@ private:
     QString cardSerial1;
     QString pin1;
     QByteArray token1;
+    MyUrl *objectMyUrl;
+    QString base_url;
+    QNetworkAccessManager *loginManager;
+    QNetworkReply *reply;
+    QByteArray response_data;
+    QString events1;
 };
 
 #endif // VALIKKO_H
