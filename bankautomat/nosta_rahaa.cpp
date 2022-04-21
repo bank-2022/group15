@@ -3,13 +3,19 @@
 #include <QMessageBox>
 
 
-Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QString token, QWidget *parent) :
+Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Nosta_rahaa)
 {
+    cardSerial1 = cardSerial;
+    balance1 = balance;
+    token1 = token;
     ui->setupUi(this);
     lopeta = new Lopetus;
+    connect(this, SIGNAL(withdrawal(int)), this, SLOT(withdrawEvent(int)));
 
+    objectMyUrl = new MyUrl;
+    base_url = objectMyUrl->getBase_url();
 }
 
 Nosta_rahaa::~Nosta_rahaa()
@@ -31,25 +37,25 @@ Nosta_rahaa::~Nosta_rahaa()
 
 void Nosta_rahaa::on_btn20Withdraw_clicked()
 {
-
+    emit withdrawal(20);
 }
 
 
 void Nosta_rahaa::on_btn40Withdraw_clicked()
 {
-
+    emit withdrawal(40);
 }
 
 
 void Nosta_rahaa::on_btn80Withdraw_clicked()
 {
-
+    emit withdrawal(80);
 }
 
 
 void Nosta_rahaa::on_btn120Withdraw_clicked()
 {
-
+    emit withdrawal(120);
 }
 
 
@@ -64,4 +70,23 @@ void Nosta_rahaa::on_btnReturn_clicked()
     emit returning();
     this->hide();
 }
+
+void Nosta_rahaa::withdrawEvent(int n)
+{
+    if (balance1.toInt()<n)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Nostetaan "+QString::number(n)+"€...");
+        msgBox.exec();
+
+    }
+    else {
+
+    }
+}
+
+
+
+
+
 
