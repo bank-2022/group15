@@ -18,16 +18,17 @@ public:
     ~MainWindow();
 
 public slots:
-    void aikaulos();
+    void TimeOut();
+    void StopTimer();
+    void ResetTimer();
+
 
 private slots:
-
-    void on_auki_clicked();
-    void paluupaluusta();
+    void on_login_clicked();
 
 private:
     Ui::MainWindow *ui;
-    Tunnusluku*pToka;
+    Tunnusluku*pTunnusLuku;
     QTimer*timer;
 };
 #endif // MAINWINDOW_H

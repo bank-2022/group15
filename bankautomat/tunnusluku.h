@@ -21,9 +21,11 @@ class Tunnusluku : public QWidget
 public:
     explicit Tunnusluku(QWidget *parent = nullptr);
     ~Tunnusluku();
+    void ResetPinWindow();
 
 signals:
-    void paluu();
+    void Login();
+    void ButtonPushed();
 
 private slots:
     void loginSlot(QNetworkReply *reply);
@@ -44,7 +46,6 @@ private slots:
     void on_pushButton_11_clicked();
     void on_pushButton_12_clicked();
 
-    void matkatakasin();
 
 
 

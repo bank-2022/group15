@@ -25,88 +25,98 @@ Tunnusluku::~Tunnusluku()
     objectMyUrl = nullptr;
 }
 
-void Tunnusluku::matkatakasin()
-{
-        emit paluu();
-        this->close();
+void Tunnusluku::ResetPinWindow(){
+    pinko = "";
+    ui->Laatikko->setText("");
 }
-
 
 void Tunnusluku::on_pushButton_clicked()
 {
     pinko.append("1");
     ui->Laatikko->setText(pinko); //aseta haluamasi numero laatikkoon
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_2_clicked()
 {
     pinko.append("2");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_3_clicked()
 {
     pinko.append("3");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_4_clicked()
 {
     pinko.append("4");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_5_clicked()
 {
     pinko.append("5");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 void Tunnusluku::on_pushButton_6_clicked()
 {
     pinko.append("6");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_7_clicked()
 {
     pinko.append("7");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_8_clicked()
 {
     pinko.append("8");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_9_clicked()
 {
     pinko.append("9");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_10_clicked()
 {
     pinko.append("0");
     ui->Laatikko->setText(pinko);
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_11_clicked() //voit poistaa laatikkoon tulleet numerot
 {
-    ui->Laatikko->setText("poista numero");
+    //ui->Laatikko->setText("poista numero");
+    ui->Laatikko->setText("");
     pinko = "";
+    emit ButtonPushed();
 }
 
 void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatikkoon niin sulje ja näytä seuraava kohta
 {                                           //jos taas pin koodi on väärä niin ilmoita yritysten määrä kunnes viimeinen on käytetty sitten sulje automaatti
-
-    if (pinko == "")
-    {
+    if (pinko == ""){
         ui->Laatikko->setText("Syötä pin");
+        emit ButtonPushed();
     }
     else
     {
         if(tries>0){
+            emit Login();
             ui->Laatikko->setText("Connecting...");
             QJsonObject jsonObj;
             jsonObj.insert("username", "4258145576238597");
@@ -125,22 +135,26 @@ void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatik
         pinko = "";
     }
 
+    /*
+      if (pinko == "1234") {
 
-//    if (pinko == "1234") {
+        QMessageBox msgBox;
+        msgBox.setText("pinkoodi oikein");
+        msgBox.exec();
 
-//        QMessageBox msgBox;
-//        msgBox.setText("pinkoodi oikein");
-//        msgBox.exec();
+        valikkoo->show();
+        this-> close();
+       }
 
-//        valikkoo->show();
-//        this-> close();
-//       }
-
-//    else {
-//        QMessageBox msgBox;
-//        msgBox.setText("pinkoodi väärin, yritä uudestaan");
-//        msgBox.exec();
+    else {
+        QMessageBox msgBox;
+        msgBox.setText("pinkoodi väärin, yritä uudestaan");
+        msgBox.exec();
       }
+
+    */
+
+}
 
 
 void Tunnusluku::loginSlot(QNetworkReply *reply)
@@ -153,17 +167,14 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
         if(tries>0){
             ui->Laatikko->setText("Väärä pin, "+QString::number(tries)+" yritystä jäljellä.");
         }
-        else
-        {
+        else{
             ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
         }
-
     }
-    else
-    {
+
+    else{
         tries = 3;
         ui->Laatikko->setText("Logging in..");
-
 
         token = "Bearer "+response_data;
         name = "";
@@ -182,14 +193,12 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
         connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getCustomerSlot(QNetworkReply*)));
 
         reply = loginManager->get(request);
-
     }
-
 
     //QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     //QJsonArray json_array = json_doc.array();
-
 }
+
 
 void Tunnusluku::getCustomerSlot(QNetworkReply *reply)
 {

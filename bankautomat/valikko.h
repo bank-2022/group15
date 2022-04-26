@@ -21,6 +21,12 @@ public:
     ~valikko();
     QString getText();
 
+public slots:
+    void ResetTimer();
+    void StopTimer();
+
+    void StartTimerPar(QWidget*);
+
 private slots:
     void on_btnEvents_clicked();
 
@@ -32,6 +38,9 @@ private slots:
 
     void getAccountSlot(QNetworkReply*);
     void getEventsSlot(QNetworkReply*);
+
+    void TimeOut();
+    void TimeOutLogout();
 
 private:
     Ui::valikko *ui;
@@ -46,6 +55,8 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
     QString events1;
+    QTimer *timer;
+    QWidget *timedWindow;
 };
 
 #endif // VALIKKO_H

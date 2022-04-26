@@ -1,7 +1,6 @@
 #include "valikko.h"
 #include "ui_valikko.h"
 
-
 valikko::valikko(QString name, QString balance, QString events, QString cardSerial, QByteArray token, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::valikko)
@@ -9,6 +8,7 @@ valikko::valikko(QString name, QString balance, QString events, QString cardSeri
     balance1 = balance;
     cardSerial1 = cardSerial;
     token1 = token;
+
     ui->setupUi(this);
     ui->lblWelcome->setText("Welcome "+name);
     ui->lblBalance->setText(balance);
@@ -16,6 +16,10 @@ valikko::valikko(QString name, QString balance, QString events, QString cardSeri
 
     objectMyUrl = new MyUrl;
     base_url = objectMyUrl->getBase_url();
+
+    timer = new QTimer(this);
+    timer->setInterval(5000);
+    connect   (timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
 }
 
 valikko::~valikko()
@@ -26,9 +30,50 @@ valikko::~valikko()
     Nosta = nullptr;
 }
 
+
+void valikko::StartTimerPar(QWidget *ikkuna){
+    timer->start();
+    timedWindow = ikkuna;
+    connect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
+}
+
+void valikko::TimeOut(){
+    StopTimer();
+    timedWindow->hide();
+    this->show();
+}
+
+void valikko::ResetTimer(){
+    timer->stop();
+    timer->start();
+    qDebug("Button pressed - reset timer");
+}
+
+void valikko::StopTimer(){
+    timer->stop();
+    qDebug("Valikossa - stop timer");
+
+    /*
+     *  En tiiä miten se web token expiration toimii niin testasin tätä session timeouttiin
+     *
+    timer->setInterval(10000);
+    timer->start();
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
+    connect   (timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    */
+}
+void valikko::TimeOutLogout(){
+    // kuuluu ylempään
+    //LOGOUT
+}
+
+
+
+
 void valikko::on_btnEvents_clicked()
 {
 
+   //StartTimerPar( ); // pistä näytetty ikkuna tähän parametriksi
 }
 
 
@@ -38,6 +83,7 @@ void valikko::on_btnWithdraw_clicked()
     Nosta->show();
     this->hide();
     connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
+    StartTimerPar(Nosta);
 }
 
 
@@ -45,6 +91,7 @@ void valikko::on_btnDeposit_clicked()
 {
     //Nosta->show();
     this->close();
+    //StartTimerPar( ); // pistä näytetty ikkuna tähän parametriksi
 }
 
 

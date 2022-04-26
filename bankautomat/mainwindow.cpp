@@ -7,39 +7,49 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    pToka = new Tunnusluku;
+    pTunnusLuku = new Tunnusluku;
 
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()),this,SLOT(aikaulos())); //timerin signaali jne
+    connect(timer, SIGNAL(timeout()),this,SLOT(TimeOut())); //timerin signaali jne
     timer->setInterval(5000); //asetetaan timerin aika ja annetaan singaali
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     ui = nullptr;
-    delete pToka;
-    pToka = nullptr;
+    delete pTunnusLuku;
+    pTunnusLuku = nullptr;
 }
 
-void MainWindow::on_auki_clicked()
+void MainWindow::StopTimer(){
+    timer->stop();
+    qDebug("Logged in - stop timer");
+}
+
+void MainWindow::ResetTimer(){
+    timer->stop();
+    timer->start();
+    qDebug("Button pressed - reset timer");
+}
+
+void MainWindow::on_login_clicked()
 {
     //aukaise seuraava ikkuna ja sulke nykyinen kun kortti on skannattu ja olet painanut ok
-    connect(pToka, SIGNAL(paluu()), SLOT(paluupaluusta())); //kun nappia painettu pitäisi lähettää signaali
+    connect(pTunnusLuku, SIGNAL(Login()), SLOT(StopTimer()));           //kun tunnusluku-ikkunassa login, pysäyttää timerin
+    connect(pTunnusLuku, SIGNAL(ButtonPushed()), SLOT(ResetTimer()));   //kun tunnusluku-ikkunassa painetaan jotain nappia, resettaa timerin
     timer->start();
-
-    pToka->show();
+    pTunnusLuku->show();
+    pTunnusLuku->ResetPinWindow();
     this->hide();
 }
 
-void MainWindow::aikaulos()
+void MainWindow::TimeOut()
 {
     QMessageBox msgBox;
     msgBox.setText("istunto päättynyt");
     msgBox.exec();
-    if ("istunto päättynyt")
-    {
-        timer->stop();
-    }
+    StopTimer();
+    pTunnusLuku->hide();
+    this->show();
 }
