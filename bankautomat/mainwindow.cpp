@@ -8,6 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     pToka = new Tunnusluku;
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()),this,SLOT(aikaulos())); //timerin signaali jne
+    timer->setInterval(5000); //asetetaan timerin aika ja annetaan singaali
+
 }
 
 MainWindow::~MainWindow()
@@ -21,7 +26,20 @@ MainWindow::~MainWindow()
 void MainWindow::on_auki_clicked()
 {
     //aukaise seuraava ikkuna ja sulke nykyinen kun kortti on skannattu ja olet painanut ok
+    connect(pToka, SIGNAL(paluu()), SLOT(paluupaluusta())); //kun nappia painettu pitäisi lähettää signaali
+    timer->start();
+
     pToka->show();
-    this->close();
+    this->hide();
 }
 
+void MainWindow::aikaulos()
+{
+    QMessageBox msgBox;
+    msgBox.setText("istunto päättynyt");
+    msgBox.exec();
+    if ("istunto päättynyt")
+    {
+        timer->stop();
+    }
+}

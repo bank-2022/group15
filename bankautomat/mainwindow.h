@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "tunnusluku.h"
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,12 +17,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void aikaulos();
+
 private slots:
 
     void on_auki_clicked();
+    void paluupaluusta();
 
 private:
     Ui::MainWindow *ui;
     Tunnusluku*pToka;
+    QTimer*timer;
 };
 #endif // MAINWINDOW_H

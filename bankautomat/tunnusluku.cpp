@@ -25,6 +25,11 @@ Tunnusluku::~Tunnusluku()
     objectMyUrl = nullptr;
 }
 
+void Tunnusluku::matkatakasin()
+{
+        emit paluu();
+        this->close();
+}
 
 
 void Tunnusluku::on_pushButton_clicked()

@@ -22,7 +22,8 @@ public:
     explicit Tunnusluku(QWidget *parent = nullptr);
     ~Tunnusluku();
 
-
+signals:
+    void paluu();
 
 private slots:
     void loginSlot(QNetworkReply *reply);
@@ -42,6 +43,8 @@ private slots:
     void on_pushButton_10_clicked();
     void on_pushButton_11_clicked();
     void on_pushButton_12_clicked();
+
+    void matkatakasin();
 
 
 
