@@ -41,4 +41,23 @@ router.put('/:cardSerial/withdraw/:withdrawalAmount', function(request, response
     });
 });
 
+router.put('/:cardSerial/deposit/:depositAmount', function(request, response) {
+    account.getAccountInfoByCardSerial(request.params.cardSerial, function(err, dbResult) {
+        if(err){
+            response.json(err);
+        }
+        else {
+            account.deposit(dbResult[0].accountID, request.params.depositAmount, function(err, dbResult) {
+                if(err){
+                    response.json(err);
+                }
+                else {
+                    response.send('Deposited successfully');
+                }
+            });
+            
+        }
+    });
+});
+
 module.exports = router;
