@@ -79,7 +79,7 @@ void valikko::on_btnEvents_clicked()
 
 void valikko::on_btnWithdraw_clicked()
 {
-    Nosta = new Nosta_rahaa (cardSerial1, balance1, token1);
+    Nosta = new Nosta_rahaa (cardSerial1, balance1, token1, "withdrawal");
     Nosta->show();
     this->hide();
     connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
@@ -89,9 +89,11 @@ void valikko::on_btnWithdraw_clicked()
 
 void valikko::on_btnDeposit_clicked()
 {
-    //Nosta->show();
-    this->close();
-    //StartTimerPar( ); // pistä näytetty ikkuna tähän parametriksi
+    Nosta = new Nosta_rahaa (cardSerial1, balance1, token1, "deposit");
+    Nosta->show();
+    this->hide();
+    connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
+    StartTimerPar(Nosta);
 }
 
 
@@ -123,7 +125,7 @@ void valikko::getAccountSlot(QNetworkReply *reply)
     }
     qDebug()<<"balance : "+balance1;
 
-    QNetworkRequest request((base_url+"/events/"+cardSerial1));
+    QNetworkRequest request((base_url+"/events/"+cardSerial1+"/last10"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     //WEBTOKEN AUTH

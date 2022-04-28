@@ -19,31 +19,30 @@ class Nosta_rahaa : public QWidget
     Q_OBJECT
 
 public:
-    explicit Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QWidget *parent = nullptr);
+    explicit Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QWidget *parent = nullptr);
     ~Nosta_rahaa();
+
+    void transactionEvent(int n);
 
 signals:
     void returning();
-    int withdrawal(int n);
 
 private slots:
-    void on_btn20Withdraw_clicked();
+    void on_btn20Transaction_clicked();
 
-    void on_btn40Withdraw_clicked();
+    void on_btn40Transaction_clicked();
 
-    void on_btn80Withdraw_clicked();
+    void on_btn80Transaction_clicked();
 
-    void on_btn120Withdraw_clicked();
+    void on_btn120Transaction_clicked();
 
     void on_btnCustomAmount_clicked();
 
     void on_btnReturn_clicked();
 
-    void withdrawEvent(int n);
+    void transactionSlot(QNetworkReply*);
 
-    void withdrawSlot(QNetworkReply*);
-
-    void withdrawFinishSlot(QNetworkReply*);
+    void transactionFinishSlot(QNetworkReply*);
 
 private:
     Ui::Nosta_rahaa *ui;
@@ -57,8 +56,9 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
-    QString witResult;
+    QString transactionResult;
     QDateTime qAika;
+    QString trType;
 };
 
 #endif // NOSTA_RAHAA_H

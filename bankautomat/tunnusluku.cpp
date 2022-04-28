@@ -239,7 +239,7 @@ void Tunnusluku::getAccountSlot(QNetworkReply *reply)
     }
     qDebug()<<"balance : "+balance;
 
-    QNetworkRequest request((base_url+"/events/"+cardSerial));
+    QNetworkRequest request((base_url+"/events/"+cardSerial+"/last10"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     //WEBTOKEN AUTH

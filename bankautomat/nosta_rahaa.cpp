@@ -3,7 +3,7 @@
 
 
 
-Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QWidget *parent) :
+Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Nosta_rahaa)
 {
@@ -12,12 +12,12 @@ Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, 
     token1 = token;
     ui->setupUi(this);
     lopeta = new Lopetus;
-    connect(this, SIGNAL(withdrawal(int)), this, SLOT(withdrawEvent(int)));
 
     objectMyUrl = new MyUrl;
     base_url = objectMyUrl->getBase_url();
-}
 
+    trType = type;
+}
 Nosta_rahaa::~Nosta_rahaa()
 {
     delete ui;
@@ -35,27 +35,27 @@ Nosta_rahaa::~Nosta_rahaa()
 //    this->close();
 
 
-void Nosta_rahaa::on_btn20Withdraw_clicked()
+void Nosta_rahaa::on_btn20Transaction_clicked()
 {
-    emit withdrawal(20);
+    transactionEvent(20);
 }
 
 
-void Nosta_rahaa::on_btn40Withdraw_clicked()
+void Nosta_rahaa::on_btn40Transaction_clicked()
 {
-    emit withdrawal(40);
+    transactionEvent(40);
 }
 
 
-void Nosta_rahaa::on_btn80Withdraw_clicked()
+void Nosta_rahaa::on_btn80Transaction_clicked()
 {
-    emit withdrawal(80);
+    transactionEvent(80);
 }
 
 
-void Nosta_rahaa::on_btn120Withdraw_clicked()
+void Nosta_rahaa::on_btn120Transaction_clicked()
 {
-    emit withdrawal(120);
+    transactionEvent(120);
 }
 
 
@@ -68,39 +68,64 @@ void Nosta_rahaa::on_btnCustomAmount_clicked()
 void Nosta_rahaa::on_btnReturn_clicked()
 {
     emit returning();
-    this->hide();
+    this->close();
 }
 
-void Nosta_rahaa::withdrawEvent(int n)
+void Nosta_rahaa::transactionEvent(int n)
 {
-    if (balance1.toInt()<n)
+    qDebug()<<balance1;
+    if (trType == "withdrawal")
     {
-        QMessageBox msgBox;
-        msgBox.setText("Kate ei riitä");
-        msgBox.exec();
+        if (balance1.toInt()<n)
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Kate ei riitä");
+            msgBox.exec();
 
+        }
+        else {
+            amount = QString::number(n);
+            QMessageBox msgBox;
+            msgBox.setText("Nostetaan "+QString::number(n)+"€...");
+            msgBox.exec();
+
+
+            QJsonObject jsonObj;
+            QNetworkRequest request((base_url+"/accounts/"+cardSerial1+"/withdraw/"+QString::number(n)));
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            //WEBTOKEN AUTH
+            request.setRawHeader(QByteArray("Authorization"), (token1));
+            //WEBTOKEN AUTH END
+            loginManager = new QNetworkAccessManager(this);
+            connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(transactionSlot(QNetworkReply*)));
+            reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
+        }
     }
-    else {
+    else if (trType == "deposit")
+    {
         amount = QString::number(n);
         QMessageBox msgBox;
-        msgBox.setText("Nostetaan "+QString::number(n)+"€...");
+        msgBox.setText("Talletetaan "+QString::number(n)+"€...");
         msgBox.exec();
 
 
         QJsonObject jsonObj;
-        QNetworkRequest request((base_url+"/accounts/"+cardSerial1+"/withdraw/"+QString::number(n)));
+        QNetworkRequest request((base_url+"/accounts/"+cardSerial1+"/deposit/"+QString::number(n)));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
         //WEBTOKEN AUTH
         request.setRawHeader(QByteArray("Authorization"), (token1));
         //WEBTOKEN AUTH END
         loginManager = new QNetworkAccessManager(this);
-        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(withdrawSlot(QNetworkReply*)));
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(transactionSlot(QNetworkReply*)));
         reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
     }
+    else { qDebug()<<"error"; }
+
 }
 
-void Nosta_rahaa::withdrawSlot(QNetworkReply*)
+void Nosta_rahaa::transactionSlot(QNetworkReply*)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
@@ -120,10 +145,31 @@ void Nosta_rahaa::withdrawSlot(QNetworkReply*)
         //WEBTOKEN AUTH END
 
         loginManager = new QNetworkAccessManager(this);
-        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(withdrawFinishSlot(QNetworkReply*)));
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(transactionFinishSlot(QNetworkReply*)));
 
         reply = loginManager->post(request,QJsonDocument(jsonObj).toJson());
     }
+    else if(response_data == "Deposited successfully")
+    {
+        QJsonObject jsonObj;
+        jsonObj.insert("cardSerial", cardSerial1);
+        qAika = QDateTime::currentDateTime();
+        jsonObj.insert("dateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
+        jsonObj.insert("eventType", "talletus");
+        jsonObj.insert("amount", amount.toInt());
+        QNetworkRequest request((base_url+"/events/add"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        //WEBTOKEN AUTH
+        request.setRawHeader(QByteArray("Authorization"), (token1));
+        //WEBTOKEN AUTH END
+
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(transactionFinishSlot(QNetworkReply*)));
+
+        reply = loginManager->post(request,QJsonDocument(jsonObj).toJson());
+    }
+    else { qDebug()<<"error1"; }
 //    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
 //    QJsonArray json_array = json_doc.array();
 //    foreach (const QJsonValue &value, json_array) {
@@ -133,7 +179,7 @@ void Nosta_rahaa::withdrawSlot(QNetworkReply*)
     //    qDebug()<<"name : "+name;
 }
 
-void Nosta_rahaa::withdrawFinishSlot(QNetworkReply *)
+void Nosta_rahaa::transactionFinishSlot(QNetworkReply *)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
