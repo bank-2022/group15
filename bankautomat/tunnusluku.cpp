@@ -309,6 +309,7 @@ void Tunnusluku::cardLockedSlot(QNetworkReply *reply)
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     emit Returning();
+    this->hide();
 }
 
 void Tunnusluku::cardUnlockedSlot(QNetworkReply *reply)
