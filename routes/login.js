@@ -16,7 +16,7 @@ router.post('/',
           }
           else{
             if (dbResult.length > 0) {
-              if(dbResult.lockedAt != NULL) {
+              if(dbResult.lockedAt != null) {
                 response.send("card locked");
               } 
               else{
