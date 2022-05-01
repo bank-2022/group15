@@ -17,18 +17,18 @@ router.post('/',
           else{
             if (dbResult.length > 0) {
               if(dbResult.lockedTime == null) {
-                response.send("card locked");
-              } 
-              else{
                 if(bcrypt.compareSync(password, dbResult[0].pin)) {
                   console.log("success");
                   const token = generateAccessToken({username: username})
                   response.send(token);
               }
-              else {
-                  console.log("wrong password");
-                  response.send("false wrong password");
-                }			
+                else {
+                    console.log("wrong password");
+                    response.send("false wrong password");
+                  }
+              } 
+              else{
+                response.send("card locked");
               }
             }
             else{
