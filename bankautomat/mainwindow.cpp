@@ -33,6 +33,11 @@ void MainWindow::ResetTimer(){
     qDebug("Button pressed - reset timer");
 }
 
+void MainWindow::ReturningSlot()
+{
+    this->show();
+}
+
 void MainWindow::on_login_clicked()
 {
     //aukaise seuraava ikkuna ja sulke nykyinen kun kortti on skannattu ja olet painanut ok
@@ -41,6 +46,7 @@ void MainWindow::on_login_clicked()
     timer->start();
     pTunnusLuku->show();
     pTunnusLuku->ResetPinWindow();
+    connect(pTunnusLuku, SIGNAL(Returning()), this, SLOT(ReturningSlot()));
     this->hide();
 }
 

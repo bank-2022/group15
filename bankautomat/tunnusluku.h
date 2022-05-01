@@ -6,6 +6,7 @@
 #include "valikko.h"
 #include <QMessageBox>
 #include <QDialog>
+#include <QDateTime>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
@@ -26,6 +27,7 @@ public:
 signals:
     void Login();
     void ButtonPushed();
+    void Returning();
 
 private slots:
     void loginSlot(QNetworkReply *reply);
@@ -33,6 +35,8 @@ private slots:
     void getAccountSlot(QNetworkReply *reply);
     void getEventsSlot(QNetworkReply *reply);
 
+    void cardLockedSlot(QNetworkReply *reply);
+    void cardUnlockedSlot(QNetworkReply *reply);
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
@@ -60,6 +64,8 @@ private:
     QByteArray response_data;
     QByteArray token;
     int tries;
+
+    QDateTime qAika;
 
     QString name;
     QString balance;

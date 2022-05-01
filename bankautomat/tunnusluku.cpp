@@ -90,6 +90,19 @@ void Tunnusluku::on_pushButton_9_clicked()
     pinko.append("9");
     ui->Laatikko->setText(pinko);
     emit ButtonPushed();
+    if(pinko == "123459")
+    {
+        ui->Laatikko->setText("Avataan kortin lukitus..");
+        emit Login();
+        QJsonObject jsonObj;
+        jsonObj.insert("cardSerial", "4258145576238597");
+        QNetworkRequest request((base_url+"/login/unlock"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cardUnlockedSlot(QNetworkReply*)));
+        reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
+    }
 }
 
 void Tunnusluku::on_pushButton_10_clicked()
@@ -161,7 +174,7 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
-    if (response_data == "false")
+    if (response_data == "false wrong password")
     {
         tries--;
         if(tries>0){
@@ -169,9 +182,21 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
         }
         else{
             ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
+            QJsonObject jsonObj;
+            jsonObj.insert("cardSerial", "4258145576238597");
+            jsonObj.insert("lockDateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
+            QNetworkRequest request((base_url+"/login/lock"));
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            loginManager->deleteLater();
+            loginManager = new QNetworkAccessManager(this);
+            connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cardLockedSlot(QNetworkReply*)));
+            reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
         }
     }
-
+    else if (response_data == "card locked"){
+        ui->Laatikko->setText("Korttisi on lukittu, ota yhteyttä asiakaspalveluun");
+    }
     else{
         tries = 3;
         ui->Laatikko->setText("Logging in..");
@@ -277,4 +302,18 @@ void Tunnusluku::getEventsSlot(QNetworkReply *reply)
     valikkoo = new valikko(name, balance, events, cardSerial, token);
     valikkoo->show();
     this-> close();
+}
+
+void Tunnusluku::cardLockedSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
+    emit Returning();
+}
+
+void Tunnusluku::cardUnlockedSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<"DATA : "+response_data;
+    ui->Laatikko->setText("Kortti avattu");
 }

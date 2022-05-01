@@ -21,6 +21,7 @@ public slots:
     void TimeOut();
     void StopTimer();
     void ResetTimer();
+    void ReturningSlot();
 
 
 private slots:
