@@ -16,7 +16,7 @@ router.post('/',
           }
           else{
             if (dbResult.length > 0) {
-              if(dbResult.lockedTime == null) {
+              if(dbResult.lockedTime == "") {
                 if(bcrypt.compareSync(password, dbResult[0].pin)) {
                   console.log("success");
                   const token = generateAccessToken({username: username})
