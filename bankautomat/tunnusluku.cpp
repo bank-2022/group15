@@ -184,6 +184,7 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
             ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
             QJsonObject jsonObj;
             jsonObj.insert("cardSerial", "4258145576238597");
+            qAika = QDateTime::currentDateTime();
             jsonObj.insert("lockDateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
             QNetworkRequest request((base_url+"/login/lock"));
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -308,8 +309,9 @@ void Tunnusluku::cardLockedSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
+    tries = 3;
     emit Returning();
-    this->hide();
+    this->close();
 }
 
 void Tunnusluku::cardUnlockedSlot(QNetworkReply *reply)
@@ -317,4 +319,5 @@ void Tunnusluku::cardUnlockedSlot(QNetworkReply *reply)
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     ui->Laatikko->setText("Kortti avattu");
+    pinko = "";
 }
