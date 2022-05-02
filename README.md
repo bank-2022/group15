@@ -1,3 +1,9 @@
 # Ryhmä 15
-## Ohjelmistokehityksen sovellusprojekti
-Branchista init_bank löytyy aina ajantasainen projektin tilanne jos main branchiin ei ole vielä puskettu.
+## Ohjelmistokehityksen sovellusprojekti kevät 2022
+Terho Träff
+Aki-Petteri Leppänen
+Anni Toivanen
+Ville Pelimanni
+
+### TO-DO:
+- yhdistä kortista luettu ID tietokantaan tallenneettuihin tietoihin
