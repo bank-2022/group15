@@ -26,6 +26,8 @@ public:
 
 signals:
     void returning();
+    void resetTimer();
+    void stopTimer();
 
 private slots:
     void on_btn20Transaction_clicked();

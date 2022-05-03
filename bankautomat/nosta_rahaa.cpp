@@ -73,6 +73,8 @@ void Nosta_rahaa::on_btnReturn_clicked()
 
 void Nosta_rahaa::transactionEvent(int n)
 {
+    emit stopTimer();
+    qDebug("clicked transaction, stop timer");
     qDebug()<<balance1;
     if (trType == "withdrawal")
     {
@@ -81,7 +83,7 @@ void Nosta_rahaa::transactionEvent(int n)
             QMessageBox msgBox;
             msgBox.setText("Kate ei riitä");
             msgBox.exec();
-
+            emit resetTimer();
         }
         else {
             amount = QString::number(n);
@@ -184,6 +186,7 @@ void Nosta_rahaa::transactionFinishSlot(QNetworkReply *)
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
     emit returning();
+    this->close();
 }
 
 

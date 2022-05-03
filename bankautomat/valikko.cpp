@@ -19,7 +19,9 @@ valikko::valikko(QString name, QString balance, QString events, QString cardSeri
 
     timer = new QTimer(this);
     timer->setInterval(5000);
-    connect   (timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    connect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    timer->start();
+    qDebug("Logged in, start timer");
 }
 
 valikko::~valikko()
@@ -32,15 +34,20 @@ valikko::~valikko()
 
 
 void valikko::StartTimerPar(QWidget *ikkuna){
+    timer->stop();
     timer->start();
+    qDebug("new window, reset timer");
     timedWindow = ikkuna;
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
     connect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
 }
 
 void valikko::TimeOut(){
-    StopTimer();
-    timedWindow->hide();
+    //StopTimer();
+    timedWindow->close();
     this->show();
+    TimeOutLogout();
+    //this->show();
 }
 
 void valikko::ResetTimer(){
@@ -65,6 +72,13 @@ void valikko::StopTimer(){
 void valikko::TimeOutLogout(){
     // kuuluu ylempään
     //LOGOUT
+    QMessageBox msgBox;
+    msgBox.setText("Istunto päättynyt");
+    msgBox.exec();
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
+    emit Returning();
+    this->close();
 }
 
 
@@ -83,6 +97,8 @@ void valikko::on_btnWithdraw_clicked()
     Nosta->show();
     this->hide();
     connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
+    connect(Nosta, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    connect(Nosta, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
     StartTimerPar(Nosta);
 }
 
@@ -93,12 +109,19 @@ void valikko::on_btnDeposit_clicked()
     Nosta->show();
     this->hide();
     connect(Nosta, SIGNAL(returning()), SLOT(returningFromChild()));
+    connect(Nosta, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    connect(Nosta, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
     StartTimerPar(Nosta);
 }
 
 
 void valikko::returningFromChild()
 {
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
+    connect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    disconnect(Nosta, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    disconnect(Nosta, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
+    ResetTimer();
     this->show();
     QNetworkRequest request((base_url+"/accounts/"+cardSerial1));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -166,7 +189,19 @@ void valikko::getEventsSlot(QNetworkReply *reply)
 
 void valikko::on_btnQuit_clicked()
 {
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
+    disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
     emit Returning();
     this->close();
+}
+
+void valikko::childResetTimer()
+{
+    ResetTimer();
+}
+
+void valikko::childStopTimer()
+{
+    StopTimer();
 }
 

@@ -46,6 +46,9 @@ private slots:
 
     void on_btnQuit_clicked();
 
+    void childResetTimer();
+    void childStopTimer();
+
 private:
     Ui::valikko *ui;
     Nosta_rahaa*Nosta;
