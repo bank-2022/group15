@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "tunnusluku.h"
 #include <QTimer>
+#include "rfidserial.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QString userId; //tähän tallennetaan kortista luettu ID
 
 public slots:
     void TimeOut();
@@ -26,10 +28,12 @@ public slots:
 
 private slots:
     void on_login_clicked();
+    void on_card_read();
 
 private:
     Ui::MainWindow *ui;
     Tunnusluku*pTunnusLuku;
     QTimer*timer;
+    Rfidserial*pRfidSerial;
 };
 #endif // MAINWINDOW_H

@@ -8,10 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     pTunnusLuku = new Tunnusluku;
+    pRfidSerial = new Rfidserial;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(TimeOut())); //timerin signaali jne
     timer->setInterval(5000); //asetetaan timerin aika ja annetaan singaali
+
+    connect(pRfidSerial,SIGNAL(serialReady())
+            ,this, SLOT(on_card_read()));    //liitetään lukijan signaalit
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +54,22 @@ void MainWindow::on_login_clicked()
     this->hide();
 }
 
+void MainWindow::on_card_read()
+{
+    //aukaise seuraava ikkuna kun kortti luettu
+    //userId muuttujaan otetaan talteen kortilta luettu ID, jota voidaan sitten verrata db:n käyttäjätunnuksiin
+
+    userId = pRfidSerial->readValue();
+    qDebug()<<userId;
+    connect(pTunnusLuku, SIGNAL(Login()), SLOT(StopTimer()));           //kun tunnusluku-ikkunassa login, pysäyttää timerin
+    connect(pTunnusLuku, SIGNAL(ButtonPushed()), SLOT(ResetTimer()));   //kun tunnusluku-ikkunassa painetaan jotain nappia, resettaa timerin
+    timer->start();
+    pTunnusLuku->show();
+    pTunnusLuku->ResetPinWindow();
+    connect(pTunnusLuku, SIGNAL(Returning()), this, SLOT(ReturningSlot()));
+    this->hide();
+}
+
 void MainWindow::TimeOut()
 {
     QMessageBox msgBox;
@@ -58,4 +78,5 @@ void MainWindow::TimeOut()
     StopTimer();
     pTunnusLuku->hide();
     this->show();
+    pRfidSerial->restartSerial();
 }
