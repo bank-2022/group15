@@ -169,6 +169,12 @@ void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatik
 
 }
 
+void Tunnusluku::returningSlot()
+{
+    emit Returning();
+    this->close();
+}
+
 
 void Tunnusluku::loginSlot(QNetworkReply *reply)
 {
@@ -301,6 +307,7 @@ void Tunnusluku::getEventsSlot(QNetworkReply *reply)
     qDebug()<<"events : "+events;
 
     valikkoo = new valikko(name, balance, events, cardSerial, token);
+    connect(valikkoo, SIGNAL(Returning()), this, SLOT(returningSlot()));
     valikkoo->show();
     this-> close();
 }

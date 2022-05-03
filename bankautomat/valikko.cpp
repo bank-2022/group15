@@ -163,3 +163,10 @@ void valikko::getEventsSlot(QNetworkReply *reply)
     ui->lblEvents->setText(events1);
 
 }
+
+void valikko::on_btnQuit_clicked()
+{
+    emit Returning();
+    this->close();
+}
+

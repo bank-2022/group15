@@ -21,6 +21,8 @@ public:
     ~valikko();
     QString getText();
 
+signals:
+    void Returning();
 public slots:
     void ResetTimer();
     void StopTimer();
@@ -41,6 +43,8 @@ private slots:
 
     void TimeOut();
     void TimeOutLogout();
+
+    void on_btnQuit_clicked();
 
 private:
     Ui::valikko *ui;
