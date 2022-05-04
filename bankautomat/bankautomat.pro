@@ -17,6 +17,7 @@ SOURCES += \
     myurl.cpp \
     nosta_rahaa.cpp \
     tili_saldo.cpp \
+    tilitapahtumat.cpp \
     tunnusluku.cpp \
     valikko.cpp
 
@@ -26,6 +27,7 @@ HEADERS += \
     myurl.h \
     nosta_rahaa.h \
     tili_saldo.h \
+    tilitapahtumat.h \
     tunnusluku.h \
     valikko.h
 
@@ -34,6 +36,7 @@ FORMS += \
     mainwindow.ui \
     nosta_rahaa.ui \
     tili_saldo.ui \
+    tilitapahtumat.ui \
     tunnusluku.ui \
     valikko.ui
 
