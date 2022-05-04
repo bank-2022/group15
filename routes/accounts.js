@@ -24,7 +24,7 @@ router.put('/:cardSerial/withdraw/:withdrawalAmount', function(request, response
             response.json(err);
         }
         else {
-            if(request.params.withdrawalAmount > dbResult[0].balance){
+            if(int(request.params.withdrawalAmount) > int(dbResult[0].balance)){
                 response.json("Not enough balance");
             }
             else {
