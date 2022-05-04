@@ -187,6 +187,9 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
             ui->Laatikko->setText("Väärä pin, "+QString::number(tries)+" yritystä jäljellä.");
         }
         else{
+            QMessageBox msgBox;
+            msgBox.setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
+            msgBox.exec();
             ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
             QJsonObject jsonObj;
             jsonObj.insert("cardSerial", "4258145576238597");
