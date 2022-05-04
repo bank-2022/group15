@@ -61,7 +61,13 @@ void Nosta_rahaa::on_btn120Transaction_clicked()
 
 void Nosta_rahaa::on_btnCustomAmount_clicked()
 {
-
+    emit resetTimer();
+    bool ok;
+    int n = QInputDialog::getInt( this, tr("Custom amount"), tr("Määrä:"), 10, 10, 400, 10, &ok);
+    if(n!=0&&ok)
+    {
+        transactionEvent(n);
+    }
 }
 
 

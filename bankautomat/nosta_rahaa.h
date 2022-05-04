@@ -9,6 +9,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <QInputDialog>
 
 namespace Ui {
 class Nosta_rahaa;
