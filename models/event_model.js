@@ -6,7 +6,7 @@ const event = {
     },
 
     getTenEvents: function(cardSerial, callback) {
-        return db.query('SELECT * FROM events where cardSerial=? ORDER BY datetime DESC LIMIT 10', [cardSerial], callback);
+        return db.query('SELECT * FROM events where cardSerial=? && eventtype="nosto" OR eventtype="talletus" ORDER BY datetime DESC LIMIT 10', [cardSerial], callback);
     },
 
     getTenCreditEvents: function(cardSerial, callback) {
