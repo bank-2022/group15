@@ -2,7 +2,7 @@ const db = require('../database');
 
 const event = {
     getAllEvents: function(cardSerial, callback){
-        return db.query('SELECT * FROM events WHERE cardSerial=? ORDER BY datetime', [cardSerial], callback);
+        return db.query('SELECT * FROM events WHERE cardSerial=? ORDER BY datetime DESC', [cardSerial], callback);
     },
 
     getTenEvents: function(cardSerial, callback) {
