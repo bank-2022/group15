@@ -14,6 +14,16 @@ router.get('/:cardSerial/last10', function(request, response) {
     });
 });
 
+router.get('/:cardSerial/last10credit', function(request, response) {
+    event.getTenCreditEvents(request.params.cardSerial, function(err, dbResult_Event) {
+        if (err) {
+          response.json(err);
+        } else {
+            response.json(dbResult_Event);
+        }
+    });
+});
+
 // KT-0003 #2
 // Hakee kaikki tilitapahtumat kortin numerolla
 router.get('/:cardSerial', function(request, response) {

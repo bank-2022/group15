@@ -9,6 +9,10 @@ const event = {
         return db.query('SELECT * FROM events where cardSerial=? ORDER BY datetime DESC LIMIT 10', [cardSerial], callback);
     },
 
+    getTenCreditEvents: function(cardSerial, callback) {
+        return db.query('SELECT * FROM events where cardSerial=? && eventtype="credit" ORDER BY datetime DESC LIMIT 10', [cardSerial], callback);
+    },
+
     addEvent: function(event, callback){
         return db.query('INSERT INTO events (cardSerial, dateTime, eventType, amount) values (?, ?, ?, ?)', [event.cardSerial, event.dateTime, event.eventType, event.amount], callback);
     }
