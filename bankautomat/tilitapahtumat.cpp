@@ -104,19 +104,22 @@ void tilitapahtumat::getEventsSlot(QNetworkReply *)
             events="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", " ").replace("T", " ");
             events.chop(8);
             events+="\n";
+            eventList.append(events);
         }
         else if (json_obj["eventType"].toString() == "talletus" && cardType == "Debit")
         {
             events="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", " ").replace("T", " ");
             events.chop(8);
             events+="\n";
+            eventList.append(events);
         }
         else if (json_obj["eventType"].toString() == "credit" && cardType == "Credit"){
             events="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", " ").replace("T", " ");
             events.chop(8);
             events+="\n";
+            eventList.append(events);
         }
-        eventList.append(events);
+
     }
     iterator = 0;
     iteMax = 10;
