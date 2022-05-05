@@ -6,6 +6,8 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include "myurl.h"
+#include <QListIterator>
+#include <math.h>
 
 
 
@@ -20,12 +22,13 @@ class tilitapahtumat : public QWidget
 public:
     explicit tilitapahtumat(QString cardSerial, QByteArray token, QWidget *parent = nullptr);
     ~tilitapahtumat();
-    void getEvents();
+
 
 signals:
     void returning();
     void resetTimer();
     void stopTimer();
+    void eventBegin();
 
 private slots:
     void on_btnPrev_clicked();
@@ -34,6 +37,7 @@ private slots:
 
     void on_btnReturn_clicked();
 
+    void getEvents();
     void getEventsSlot(QNetworkReply*);
 
 private:
@@ -46,6 +50,12 @@ private:
     QByteArray token;
     QString cardSerial;
     QString events;
+    QString eventPrint;
+    int iterator;
+    int iteMax;
+    int pgNum;
+    float pgMax;
+    QList<QString> eventList;
 };
 
 #endif // TILITAPAHTUMAT_H
