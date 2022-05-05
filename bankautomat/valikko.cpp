@@ -200,19 +200,19 @@ void valikko::getEventsSlot(QNetworkReply *reply)
         QJsonObject json_obj = value.toObject();
         if(json_obj["eventType"].toString() == "nosto" && cardType == "Debit")
         {
-            events1+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events1+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".");
             events1.chop(14);
             events1+="\n";
         }
         else if(json_obj["eventType"].toString() == "credit" && cardType == "Credit")
         {
-            events1+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events1+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".");
             events1.chop(14);
             events1+="\n";
         }
         else if (json_obj["eventType"].toString() == "talletus" && cardType == "Debit")
         {
-            events1+="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events1+="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".");
             events1.chop(14);
             events1+="\n";
         }
