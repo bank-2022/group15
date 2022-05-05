@@ -40,6 +40,7 @@ void MainWindow::ResetTimer(){
 void MainWindow::ReturningSlot()
 {
     this->show();
+    pRfidSerial->restartSerial();
 }
 
 void MainWindow::on_login_clicked()
@@ -60,6 +61,7 @@ void MainWindow::on_card_read()
     //userId muuttujaan otetaan talteen kortilta luettu ID, jota voidaan sitten verrata db:n käyttäjätunnuksiin
 
     userId = pRfidSerial->readValue();
+    pTunnusLuku->cardSerial = userId;
     qDebug()<<userId;
     connect(pTunnusLuku, SIGNAL(Login()), SLOT(StopTimer()));           //kun tunnusluku-ikkunassa login, pysäyttää timerin
     connect(pTunnusLuku, SIGNAL(ButtonPushed()), SLOT(ResetTimer()));   //kun tunnusluku-ikkunassa painetaan jotain nappia, resettaa timerin

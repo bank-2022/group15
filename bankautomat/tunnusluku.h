@@ -23,6 +23,7 @@ public:
     explicit Tunnusluku(QWidget *parent = nullptr);
     ~Tunnusluku();
     void ResetPinWindow();
+    QString cardSerial;
 
 signals:
     void Login();
@@ -69,7 +70,7 @@ private:
     QString name;
     QString balance;
     QString events;
-    QString cardSerial;
+    //QString cardSerial;
 };
 
 #endif // TUNNUSLUKU_H

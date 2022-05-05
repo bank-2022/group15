@@ -23,6 +23,7 @@ Tunnusluku::~Tunnusluku()
     valikkoo = nullptr;
     delete objectMyUrl;
     objectMyUrl = nullptr;
+
 }
 
 void Tunnusluku::ResetPinWindow(){
@@ -95,7 +96,7 @@ void Tunnusluku::on_pushButton_9_clicked()
         ui->Laatikko->setText("Avataan kortin lukitus..");
         emit Login();
         QJsonObject jsonObj;
-        jsonObj.insert("cardSerial", "4258145576238597");
+        jsonObj.insert("cardSerial", cardSerial);
         QNetworkRequest request((base_url+"/login/unlock"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -132,7 +133,7 @@ void Tunnusluku::on_pushButton_12_clicked() //jos oikea pinkoodi ilmestyy laatik
             emit Login();
             ui->Laatikko->setText("Connecting...");
             QJsonObject jsonObj;
-            jsonObj.insert("username", "4258145576238597");
+            jsonObj.insert("username", cardSerial);
             jsonObj.insert("password", pinko);
             QNetworkRequest request((base_url+"/login"));
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -180,6 +181,7 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
+    qDebug()<<"cardSerial on"+cardSerial;
     if (response_data == "false wrong password")
     {
         tries--;
@@ -215,7 +217,8 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
         name = "";
         balance = "";
         events = "";
-        cardSerial = "4258145576238597";
+        //cardSerial = 0600064158;
+        //cardSerial = "4258145576238597";
 
         QNetworkRequest request((base_url+"/customers/"+cardSerial));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

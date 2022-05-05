@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include "tilitapahtumat.h"
+#include "rfidserial.h"
 
 namespace Ui {
 class valikko;
@@ -53,6 +54,7 @@ private:
     Ui::valikko *ui;
     Nosta_rahaa*Nosta;
     tilitapahtumat*eventWindow;
+    Rfidserial*pRfidserial;
     QString balance1;
     QString cardSerial1;
     QString pin1;
