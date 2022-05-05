@@ -3,10 +3,10 @@
 
 #include <QDialog>
 #include "nosta_rahaa.h"
-#include "tili_saldo.h"
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include "tilitapahtumat.h"
 
 namespace Ui {
 class valikko;
@@ -52,6 +52,7 @@ private slots:
 private:
     Ui::valikko *ui;
     Nosta_rahaa*Nosta;
+    tilitapahtumat*eventWindow;
     QString balance1;
     QString cardSerial1;
     QString pin1;

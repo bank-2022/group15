@@ -86,8 +86,13 @@ void valikko::TimeOutLogout(){
 
 void valikko::on_btnEvents_clicked()
 {
-
-   //StartTimerPar( ); // pistä näytetty ikkuna tähän parametriksi
+    eventWindow = new tilitapahtumat (cardSerial1, token1);
+    eventWindow->show();
+    this->hide();
+    connect(eventWindow, SIGNAL(returning()), SLOT(returningFromChild()));
+    connect(eventWindow, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    connect(eventWindow, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
+    StartTimerPar(eventWindow); // pistä näytetty ikkuna tähän parametriksi
 }
 
 
@@ -119,8 +124,10 @@ void valikko::returningFromChild()
 {
     disconnect(timer, SIGNAL(timeout()),this,SLOT(TimeOut()));
     connect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
-    disconnect(Nosta, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
-    disconnect(Nosta, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
+    //disconnect(Nosta, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    //disconnect(Nosta, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
+    //disconnect(eventWindow, SIGNAL(resetTimer()), this, SLOT(childResetTimer()));
+    //disconnect(eventWindow, SIGNAL(stopTimer()), this, SLOT(childStopTimer()));
     ResetTimer();
     this->show();
     QNetworkRequest request((base_url+"/accounts/"+cardSerial1));

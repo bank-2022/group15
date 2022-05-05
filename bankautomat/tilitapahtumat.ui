@@ -25,7 +25,7 @@
    <property name="title">
     <string/>
    </property>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="eventsBox">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -47,7 +47,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="btnPrev">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -60,7 +60,7 @@
     <string>Edellinen sivu</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="btnReturn">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -73,7 +73,7 @@
     <string>Takaisin</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="btnNext">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -86,7 +86,7 @@
     <string>Seuraava sivu</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="pageLabel">
    <property name="geometry">
     <rect>
      <x>420</x>
