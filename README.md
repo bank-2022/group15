@@ -5,5 +5,4 @@ Aki-Petteri Leppänen,
 Anni Toivanen,
 Ville Pelimanni
 
-### TO-DO:
-- yhdistä kortista luettu ID tietokantaan tallenneettuihin tietoihin
+Tietokannan ER-kaavio näyttää tältä <img src="documents/er_kaavio.png">
