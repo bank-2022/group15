@@ -7,6 +7,9 @@ const account = {
     withdraw: function(accountID, withdrawalAmount, callback){
         return db.query('UPDATE accounts SET balance=balance-? where accountID=?', [withdrawalAmount, accountID], callback);
     },
+    credit: function(accountID, withdrawalAmount, callback){
+        return db.query('UPDATE accounts SET creditBalance=creditBalance-? where accountID=?', [withdrawalAmount, accountID], callback);
+    },
     deposit: function(accountID, depositAmount, callback){
         return db.query('UPDATE accounts SET balance=balance+? where accountID=?', [depositAmount, accountID], callback);
     }
