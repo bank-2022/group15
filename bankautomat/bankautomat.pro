@@ -1,4 +1,6 @@
 QT       += core gui
+QT +=network
+QT +=serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,15 +12,36 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    myurl.cpp \
+    nosta_rahaa.cpp \
+    tilitapahtumat.cpp \
+    tunnusluku.cpp \
+    valikko.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    myurl.h \
+    nosta_rahaa.h \
+    tilitapahtumat.h \
+    tunnusluku.h \
+    valikko.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    nosta_rahaa.ui \
+    tilitapahtumat.ui \
+    tunnusluku.ui \
+    valikko.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx: LIBS += -L$$PWD/../rfidserial/build/ -lrfidserial
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../rfidserial/build/release/ -lrfidserial
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../rfidserial/build/debug/ -lrfidserial
+
+INCLUDEPATH += $$PWD/../rfidserial
+DEPENDPATH += $$PWD/../rfidserial
