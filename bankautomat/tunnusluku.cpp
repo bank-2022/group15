@@ -273,21 +273,62 @@ void Tunnusluku::getAccountSlot(QNetworkReply *reply)
     QJsonArray json_array = json_doc.array();
     foreach (const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
+        if (json_obj["balance"].toString()!=""){
         balance+=json_obj["balance"].toString();
+        }
+        if (json_obj["creditBalance"].toString()!=""){
+            creditBalance+=json_obj["creditBalance"].toString();
+        }
     }
     qDebug()<<"balance : "+balance;
+    qDebug()<<"creditBalance : "+creditBalance;
 
-    QNetworkRequest request((base_url+"/events/"+cardSerial+"/last10"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    if (balance!="" && creditBalance!=""){
+        QStringList items;
+        items << tr("Debit") << tr("Credit");
+        bool ok;
+        cardType = QInputDialog::getItem( this, tr("Debit vai credit"), tr("Valitse:"), items, 0, false, &ok);
+        if(ok && !cardType.isEmpty()) {}
+        else{
+            emit Returning();
+            this->close();
+        }
+    }
+    else if (balance!="" && creditBalance==""){
+        cardType="Debit";
+    }
+    else if (balance=="" && creditBalance!=""){
+        cardType="Credit";
+    }
 
-    //WEBTOKEN AUTH
-    request.setRawHeader(QByteArray("Authorization"), (token));
-    //WEBTOKEN AUTH END
-    loginManager->deleteLater();
-    loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getEventsSlot(QNetworkReply*)));
+    if (cardType == "Debit"){
+        QNetworkRequest request((base_url+"/events/"+cardSerial+"/last10"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    reply = loginManager->get(request);
+        //WEBTOKEN AUTH
+        request.setRawHeader(QByteArray("Authorization"), (token));
+        //WEBTOKEN AUTH END
+        loginManager->deleteLater();
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getEventsSlot(QNetworkReply*)));
+
+        reply = loginManager->get(request);
+    }
+    else if (cardType == "Credit") {
+        balance = creditBalance;
+        QNetworkRequest request((base_url+"/events/"+cardSerial+"/last10credit"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        //WEBTOKEN AUTH
+        request.setRawHeader(QByteArray("Authorization"), (token));
+        //WEBTOKEN AUTH END
+        loginManager->deleteLater();
+        loginManager = new QNetworkAccessManager(this);
+        connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getEventsSlot(QNetworkReply*)));
+
+        reply = loginManager->get(request);
+
+    }
 }
 
 
@@ -299,20 +340,29 @@ void Tunnusluku::getEventsSlot(QNetworkReply *reply)
     QJsonArray json_array = json_doc.array();
     foreach (const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        if(json_obj["eventType"].toString() == "nosto")
+        if(json_obj["eventType"].toString() == "nosto" && cardType == "Debit")
         {
             events+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events.chop(14);
+            events+="\n";
         }
-        else if (json_obj["eventType"].toString() == "talletus")
+        else if(json_obj["eventType"].toString() == "credit" && cardType == "Credit")
+        {
+            events+="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events.chop(14);
+            events+="\n";
+        }
+        else if (json_obj["eventType"].toString() == "talletus" && cardType == "Debit")
         {
             events+="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString();
+            events.chop(14);
+            events+="\n";
         }
-        events.chop(14);
-        events+="\n";
+
     }
     qDebug()<<"events : "+events;
 
-    valikkoo = new valikko(name, balance, events, cardSerial, token);
+    valikkoo = new valikko(name, balance, events, cardSerial, token, cardType);
     connect(valikkoo, SIGNAL(Returning()), this, SLOT(returningSlot()));
     valikkoo->show();
     this-> close();
