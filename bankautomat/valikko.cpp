@@ -18,7 +18,7 @@ valikko::valikko(QString name, QString balance, QString events, QString cardSeri
     base_url = objectMyUrl->getBase_url();
 
     timer = new QTimer(this);
-    timer->setInterval(5000);
+    timer->setInterval(10000);
     connect(timer, SIGNAL(timeout()),this,SLOT(TimeOutLogout()));
     timer->start();
     qDebug("Logged in, start timer");

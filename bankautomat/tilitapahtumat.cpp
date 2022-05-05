@@ -21,8 +21,9 @@ tilitapahtumat::~tilitapahtumat()
 
 void tilitapahtumat::on_btnPrev_clicked()
 {
-    if (iterator==0){iteMax=10;}
-    else if (iteMax == eventList.count()) {iteMax=iterator; iterator-=10;}
+    if (iterator==0 && iteMax>=10){iteMax=10;}
+    else if (iteMax == eventList.count() && eventList.count()<10){}
+    else if (iteMax == eventList.count() && eventList.count()>=10) {iteMax=iterator; iterator-=10;}
     else {iterator -= 10; iteMax-=10;}
     eventPrint="";
 
@@ -112,7 +113,8 @@ void tilitapahtumat::getEventsSlot(QNetworkReply *)
     }
     iterator = 0;
     iteMax = 10;
-    for (int i = iterator;  i != iteMax; ++i)
+    if (iteMax > eventList.count()){iteMax=eventList.count();}
+    for (int i = iterator;  i < iteMax; ++i)
     {
         eventPrint.append(eventList[i]);
     }
