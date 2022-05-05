@@ -28,7 +28,7 @@
         <x>10</x>
         <y>0</y>
         <width>411</width>
-        <height>21</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -200,7 +200,6 @@
        <font>
         <family>Microsoft YaHei UI</family>
         <pointsize>11</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
