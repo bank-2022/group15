@@ -63,7 +63,7 @@
      <item row="5" column="0">
       <widget class="QPushButton" name="pushButton_11">
        <property name="text">
-        <string>PERUUTA</string>
+        <string>TYHJENNÄ</string>
        </property>
       </widget>
      </item>

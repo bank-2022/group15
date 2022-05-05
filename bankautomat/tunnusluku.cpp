@@ -194,7 +194,7 @@ void Tunnusluku::loginSlot(QNetworkReply *reply)
             msgBox.exec();
             ui->Laatikko->setText("Kortti lukittu, ota yhteyttä asiakaspalveluun");
             QJsonObject jsonObj;
-            jsonObj.insert("cardSerial", "4258145576238597");
+            jsonObj.insert("cardSerial", cardSerial);
             qAika = QDateTime::currentDateTime();
             jsonObj.insert("lockDateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
             QNetworkRequest request((base_url+"/login/lock"));
