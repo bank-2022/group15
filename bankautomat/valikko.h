@@ -2,12 +2,12 @@
 #define VALIKKO_H
 
 #include <QDialog>
-#include "nosta_rahaa.h"
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include "tilitapahtumat.h"
 #include "rfidserial.h"
+#include "nosta_rahaa.h"
 
 namespace Ui {
 class valikko;

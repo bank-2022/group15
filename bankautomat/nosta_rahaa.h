@@ -2,7 +2,6 @@
 #define NOSTA_RAHAA_H
 
 #include <QWidget>
-#include "lopetus.h"
 #include "myurl.h"
 #include <QDateTime>
 #include <QMessageBox>
@@ -49,7 +48,6 @@ private slots:
 
 private:
     Ui::Nosta_rahaa *ui;
-    Lopetus*lopeta;
     QString balance1;
     QByteArray token1;
     QString cardSerial1;

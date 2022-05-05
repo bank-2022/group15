@@ -11,7 +11,6 @@ Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, 
     balance1 = balance;
     token1 = token;
     ui->setupUi(this);
-    lopeta = new Lopetus;
 
     objectMyUrl = new MyUrl;
     base_url = objectMyUrl->getBase_url();
@@ -22,8 +21,6 @@ Nosta_rahaa::~Nosta_rahaa()
 {
     delete ui;
     ui = nullptr;
-    delete lopeta;
-    lopeta = nullptr;
 }
 
 //void Nosta_rahaa::on_pushButton_clicked()
