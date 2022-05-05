@@ -3,7 +3,7 @@
 
 
 
-Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QWidget *parent) :
+Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QString cardType, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Nosta_rahaa)
 {
@@ -14,7 +14,7 @@ Nosta_rahaa::Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, 
 
     objectMyUrl = new MyUrl;
     base_url = objectMyUrl->getBase_url();
-
+    this->cardType = cardType;
     trType = type;
 }
 Nosta_rahaa::~Nosta_rahaa()
@@ -81,7 +81,7 @@ void Nosta_rahaa::transactionEvent(int n)
     qDebug()<<balance1;
     if (trType == "withdrawal")
     {
-        if (balance1.toInt()<n)
+        if (balance1.toInt()<n && cardType=="Debit")
         {
             QMessageBox msgBox;
             msgBox.setText("Kate ei riitä");
@@ -89,6 +89,7 @@ void Nosta_rahaa::transactionEvent(int n)
             emit resetTimer();
         }
         else {
+
             amount = QString::number(n);
             QMessageBox msgBox;
             msgBox.setText("Nostetaan "+QString::number(n)+"€...");
@@ -96,7 +97,16 @@ void Nosta_rahaa::transactionEvent(int n)
 
 
             QJsonObject jsonObj;
-            QNetworkRequest request((base_url+"/accounts/"+cardSerial1+"/withdraw/"+QString::number(n)));
+            QString evtype="";
+            if (cardType=="Debit") {
+                evtype="/withdraw/";
+            }
+            else if (cardType=="Credit") {
+                evtype="/credit/";
+            }
+            QNetworkRequest request((base_url+"/accounts/"+cardSerial1+evtype+QString::number(n)));
+
+
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
             //WEBTOKEN AUTH
@@ -107,7 +117,7 @@ void Nosta_rahaa::transactionEvent(int n)
             reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
         }
     }
-    else if (trType == "deposit")
+    else if (trType == "deposit" && cardType=="Debit")
     {
         amount = QString::number(n);
         QMessageBox msgBox;
@@ -134,13 +144,18 @@ void Nosta_rahaa::transactionSlot(QNetworkReply*)
 {
     response_data=reply->readAll();
     qDebug()<<"DATA : "+response_data;
-    if (response_data == "Withdrawn successfully")
+    if (response_data == "Withdrawn successfully" || response_data == "Credit used")
     {
         QJsonObject jsonObj;
         jsonObj.insert("cardSerial", cardSerial1);
         qAika = QDateTime::currentDateTime();
         jsonObj.insert("dateTime", qAika.toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
-        jsonObj.insert("eventType", "nosto");
+        if (cardType=="Credit"){
+            jsonObj.insert("eventType", "credit");
+        }
+        else if (cardType=="Debit"){
+            jsonObj.insert("eventType", "nosto");
+        }
         jsonObj.insert("amount", amount.toInt());
         QNetworkRequest request((base_url+"/events/add"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

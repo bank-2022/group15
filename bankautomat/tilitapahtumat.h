@@ -20,7 +20,7 @@ class tilitapahtumat : public QWidget
     Q_OBJECT
 
 public:
-    explicit tilitapahtumat(QString cardSerial, QByteArray token, QWidget *parent = nullptr);
+    explicit tilitapahtumat(QString cardSerial, QByteArray token, QString cardType, QWidget *parent = nullptr);
     ~tilitapahtumat();
 
 
@@ -56,6 +56,7 @@ private:
     int pgNum;
     float pgMax;
     QList<QString> eventList;
+    QString cardType;
 };
 
 #endif // TILITAPAHTUMAT_H

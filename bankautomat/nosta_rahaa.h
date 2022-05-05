@@ -19,7 +19,7 @@ class Nosta_rahaa : public QWidget
     Q_OBJECT
 
 public:
-    explicit Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QWidget *parent = nullptr);
+    explicit Nosta_rahaa(QString cardSerial, QString balance, QByteArray token, QString type, QString cardType, QWidget *parent = nullptr);
     ~Nosta_rahaa();
 
     void transactionEvent(int n);
@@ -60,6 +60,7 @@ private:
     QString transactionResult;
     QDateTime qAika;
     QString trType;
+    QString cardType;
 };
 
 #endif // NOSTA_RAHAA_H
