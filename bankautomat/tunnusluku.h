@@ -10,6 +10,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <QInputDialog>
 
 namespace Ui {
 class Tunnusluku;
@@ -69,7 +70,9 @@ private:
 
     QString name;
     QString balance;
+    QString creditBalance;
     QString events;
+    QString cardType;
     //QString cardSerial;
 };
 

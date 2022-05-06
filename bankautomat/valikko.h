@@ -18,10 +18,11 @@ class valikko : public QDialog
     Q_OBJECT
 
 public:
-    explicit valikko(QString name, QString balance, QString events, QString cardSerial, QByteArray token, QWidget *parent = nullptr);
+    explicit valikko(QString name, QString balance, QString events, QString cardSerial, QByteArray token, QString cardType, QWidget *parent = nullptr);
     ~valikko();
     QString getText();
 
+    QString cardType;
 signals:
     void Returning();
 public slots:

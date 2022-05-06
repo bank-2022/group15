@@ -1,7 +1,7 @@
 #include "tilitapahtumat.h"
 #include "ui_tilitapahtumat.h"
 
-tilitapahtumat::tilitapahtumat(QString cardSerial, QByteArray token, QWidget *parent) :
+tilitapahtumat::tilitapahtumat(QString cardSerial, QByteArray token, QString cardType, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::tilitapahtumat)
 {
@@ -10,6 +10,7 @@ tilitapahtumat::tilitapahtumat(QString cardSerial, QByteArray token, QWidget *pa
     base_url = objectMyUrl->getBase_url();
     this->cardSerial = cardSerial;
     this->token = token;
+    this->cardType = cardType;
     connect(this, SIGNAL(eventBegin()), this, SLOT(getEvents()));
     emit eventBegin();
 }
@@ -98,18 +99,27 @@ void tilitapahtumat::getEventsSlot(QNetworkReply *)
 
     foreach (const QJsonValue &value, json_array) {
         QJsonObject json_obj = value.toObject();
-        if(json_obj["eventType"].toString() == "nosto")
+        if(json_obj["eventType"].toString() == "nosto" && cardType == "Debit")
         {
-            events="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", " ").replace("T", " ");
+            events="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".").replace("T", " ");
+            events.chop(8);
+            events+="\n";
+            eventList.append(events);
         }
-        else if (json_obj["eventType"].toString() == "talletus")
+        else if (json_obj["eventType"].toString() == "talletus" && cardType == "Debit")
         {
-            events="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", " ").replace("T", " ");
+            events="+"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".").replace("T", " ");
+            events.chop(8);
+            events+="\n";
+            eventList.append(events);
         }
-        events.chop(8);
-        //events.replace("T", " ");
-        events+="\n";
-        eventList.append(events);
+        else if (json_obj["eventType"].toString() == "credit" && cardType == "Credit"){
+            events="-"+QString::number(json_obj["amount"].toInt())+"€, "+json_obj["eventType"].toString()+", "+json_obj["dateTime"].toString().replace("-", ".").replace("T", " ");
+            events.chop(8);
+            events+="\n";
+            eventList.append(events);
+        }
+
     }
     iterator = 0;
     iteMax = 10;

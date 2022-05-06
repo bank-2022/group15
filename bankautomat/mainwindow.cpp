@@ -47,7 +47,8 @@ void MainWindow::on_login_clicked()
     //aukaise seuraava ikkuna ja sulke nykyinen kun kortti on skannattu ja olet painanut ok
 
     pTunnusLuku = new Tunnusluku;
-    pTunnusLuku->cardSerial = "123456";
+    //pTunnusLuku->cardSerial = "123456";
+    pTunnusLuku->cardSerial = "0600064158";
     connect(pTunnusLuku, SIGNAL(Login()), SLOT(StopTimer()));           //kun tunnusluku-ikkunassa login, pysäyttää timerin
     connect(pTunnusLuku, SIGNAL(ButtonPushed()), SLOT(ResetTimer()));   //kun tunnusluku-ikkunassa painetaan jotain nappia, resettaa timerin
     timer->start();

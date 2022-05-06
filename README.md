@@ -5,4 +5,5 @@ Aki-Petteri Leppänen,
 Anni Toivanen,
 Ville Pelimanni
 
-Tietokannan ER-kaavio näyttää tältä <img src="documents/er_kaavio.png">
+Tietokannan ER-kaavio näyttää tältä  
+<img src="documents/er_kaavio.png">
